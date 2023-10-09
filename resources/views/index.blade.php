@@ -23,7 +23,7 @@
                         <p>{{trans('messages.price')}}:{{$product->price}}</p>
                     </div>
                     <div class="addToCart">
-                        <button type="submit" class="addToCartBtn">{{trans('messages.add')}}</button>
+                        <a href="{{url('addToCart/'.$product->id)}}">{{trans('messages.add')}}</a>
                     </div>
                 </form>
             </div>
