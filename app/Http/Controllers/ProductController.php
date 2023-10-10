@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Iluminate\Session\SessionManage;
 use Illuminate\Routing\Controller;
 
 class ProductController extends Controller
@@ -19,18 +17,20 @@ class ProductController extends Controller
         $products = ($idProductsInCart) ? Product::whereNotIn('id', $idProductsInCart)->get() : Product::all();
         return view('index', ['allProducts' => $products]);
     }
-
     public function cart()
     {
         $idProductsInCart = session()->get('cart');
-        $products = Product::whereIn('id', $idProductsInCart)->get();
-        if ($products) {
-            return view('cart', ['products' =>  $products]);
+
+        if ($idProductsInCart) {
+            $products = Product::whereIn('id', $idProductsInCart)->get();
+
+            if ($products) {
+                return view('cart', ['products' =>  $products]);
+            }
         } else {
             return view('cart', ['empty' =>  trans('messages.emptyCart')]);
         }
     }
-
     public function store($id)
     {
         $product = Product::find($id);
@@ -42,9 +42,11 @@ class ProductController extends Controller
         }
         return redirect()->back();
     }
-
     public function deleteProductFromCart($id)
     {
-        //
+        $cartSession = session()->get('cart');
+        $index = array_search($id, $cartSession);
+        session()->forget("cart.$index");
+        return redirect()->back();
     }
 }
