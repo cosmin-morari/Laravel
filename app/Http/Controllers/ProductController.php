@@ -7,10 +7,10 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 
+
 class ProductController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests;
-
     public function index()
     {
         $idProductsInCart = session()->get('cart');
@@ -25,10 +25,10 @@ class ProductController extends Controller
             $products = Product::whereIn('id', $idProductsInCart)->get();
 
             if ($products) {
-                return view('cart', ['products' =>  $products]);
+                return view('cart', ['products' =>  $products, 'toAdmin' => false]);
             }
         } else {
-            return view('cart', ['empty' =>  trans('messages.emptyCart')]);
+            return view('cart', ['toAdmin' => false, 'empty' =>  trans('messages.emptyCart')]);
         }
     }
     public function store($id)
