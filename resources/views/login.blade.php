@@ -10,19 +10,21 @@
 </head>
 
 <body>
-    <form action="{{route('validateLogin')}}" method="POST">
+    <form action="{{ route('validateLogin') }}" method="POST">
         @csrf
         <div class="container">
             <h3>{{ trans('messages.login') }}</h3>
-            <input type="text" name="username" placeholder="{{ trans('messages.userName') }}" value="{{ old('username') }}">
-            @error('username')
-            <p style="color:red;">{{ $message }}</p>
-        @enderror
+            <input type="email" name="adminMail" placeholder="{{ trans('messages.userName') }}"
+                value="{{ old('adminMail') }}">
+            @error('adminMail')
+                <p style="color:red;">{{ $message }}</p>
+            @enderror
             <br><br>
-            <input type="password" name="password" placeholder="{{ trans('messages.password') }}" value="{{ old('password') }}">
-            @error('password')
-            <p style="color:red;">{{ $message }}</p>
-        @enderror
+            <input type="password" name="adminPassword" placeholder="{{ trans('messages.password') }}"
+                value="{{ old('adminPassword') }}">
+            @error('adminPassword')
+                <p style="color:red;">{{ $message }}</p>
+            @enderror
             <br><br>
             <button type="submit">{{ trans('messages.login') }}</button>
         </div>

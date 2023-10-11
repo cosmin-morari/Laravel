@@ -22,8 +22,10 @@ class AdminAuthorization extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required',
-            'password' => 'required'
+            'adminMail' => 'required|email',
+            'adminPassword' => 'required'
         ];
     }
+
+   
 }
