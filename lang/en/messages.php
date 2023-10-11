@@ -16,5 +16,6 @@ return [
     'name' => 'Name',
     'order' => 'Order',
     'price' => 'Price',
-    'title' => 'Title'
+    'title' => 'Title',
+    'submitOrder' => 'Thank you so much for your order! Below are the products you ordered!'
 ];

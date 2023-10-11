@@ -17,9 +17,11 @@ class CheckoutMail extends Mailable
      * Create a new message instance.
      */
 
-    public $subject, $products, $email;
-    public function __construct($products, $email)
+    public $subject, $products, $email, $toUser, $toAdmin;
+    public function __construct($toUser, $toAdmin, $products, $email)
     {
+        $this->toUser = $toUser;
+        $this->toAdmin = $toAdmin;
         $this->products = $products;
         $this->email = $email;
     }
@@ -30,18 +32,18 @@ class CheckoutMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject:  $this->subject ,
+            subject: $this->subject,
         );
     }
 
     /**
      * Get the message content definition.
      */
-    
+
     public function build()
     {
         return $this->from($this->email)
-                    ->view('cart');
+            ->view('cart');
     }
 
 

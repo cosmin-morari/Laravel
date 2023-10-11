@@ -14,6 +14,9 @@
         @else
             <h1>{{ trans('messages.order') }}</h1>
         @endif
+        @if (isset($toUser) && $toUser)
+            {{ trans('messages.submitOrder') }}
+        @endif
         @if (isset($products))
             @foreach ($products as $product)
                 <div class="content">
@@ -27,7 +30,7 @@
                             <p>{{ trans('messages.description') }}:{{ $product->description }}</p>
                             <p>{{ trans('messages.price') }}:{{ $product->price }}</p>
                         </div>
-                        @if (isset($toAdmin) && !$toAdmin)
+                        @if (isset($toAdmin) && !$toAdmin && isset($toUser) && !$toUser)
                             <div>
                                 <button type="submit" class="RemoveBtn">{{ trans('messages.delete') }}</button>
                             </div>
@@ -35,7 +38,7 @@
                     </form>
                 </div>
             @endforeach
-            @if (isset($toAdmin) && !$toAdmin)
+            @if (isset($toAdmin) && !$toAdmin && isset($toUser) && !$toUser)
                 <form action="{{ route('checkout') }}" class="checkOut" method="POST">
                     @csrf
                     <input type="text" name="name" placeholder="{{ trans('messages.name') }}"
@@ -54,7 +57,7 @@
                     @enderror
                     <button type="submit" class="RemoveBtn">{{ trans('messages.checkout') }}</button>
                 </form>
-            @else
+            @elseif (isset($toAdmin) && $toAdmin && isset($toUser) && !$toUser)
                 <h3>{{ trans('messages.checkoutInformation') }}</h3>
                 <p>{{ trans('messages.name') }} : {{ request('name') }}</p>
                 <p>{{ trans('messages.email') }} : {{ request('contactDetails') }}</p>
@@ -63,7 +66,7 @@
         @elseif (!isset($products) && isset($empty))
             {{ $empty }}
         @endif
-        @if (isset($toAdmin) && !$toAdmin)
+        @if (isset($toAdmin) && !$toAdmin && isset($toUser) && !$toUser)
             <div class="links">
                 <a href="{{ route('index') }}">{{ trans('messages.index') }}</a>
             </div>

@@ -13,33 +13,36 @@ class ProductController extends Controller
     use AuthorizesRequests, ValidatesRequests;
     public function index()
     {
-        $idProductsInCart = session()->get('cart');
-        $products = ($idProductsInCart) ? Product::whereNotIn('id', $idProductsInCart)->get() : Product::all();
+        $cartSession = session()->get('cart');
+        $products = ($cartSession) ? Product::whereNotIn('id', $cartSession)->get() : Product::all();
         return view('index', ['allProducts' => $products]);
     }
     public function cart()
     {
-        $idProductsInCart = session()->get('cart');
+        $cartSession = session()->get('cart');
 
-        if ($idProductsInCart) {
-            $products = Product::whereIn('id', $idProductsInCart)->get();
+        if ($cartSession) {
+            $products = Product::whereIn('id', $cartSession)->get();
 
             if ($products) {
-                return view('cart', ['products' =>  $products, 'toAdmin' => false]);
+                return view('cart', ['products' =>  $products, 'toAdmin' => false, 'toUser' => false]);
             }
         } else {
-            return view('cart', ['toAdmin' => false, 'empty' =>  trans('messages.emptyCart')]);
+            return view('cart', ['toAdmin' => false, 'toUser' => false, 'empty' =>  trans('messages.emptyCart')]);
         }
     }
     public function store($id)
     {
         $product = Product::find($id);
-        $cart = session()->get('cart');
+        $cartSession = session()->get('cart');
 
-        if (!in_array($product->id, session('cart') ?? [])) {
-            $cart = $product->id;
-            session()->push('cart', $cart);
+        if ($product) {
+            if (!in_array($product->id, session('cart') ?? [])) {
+                $cartSession = $product->id;
+                session()->push('cart', $cartSession);
+            }
         }
+
         return redirect()->back();
     }
     public function deleteProductFromCart($id)
