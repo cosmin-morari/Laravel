@@ -20,7 +20,6 @@ class CheckoutController extends Controller
 
             Mail::to(env('MAIL_FROM_ADDRESS'))->send(new CheckoutMail($products, $toMail));
 
-
             session()->forget('cart');
             return redirect()->route('index');
         } else {

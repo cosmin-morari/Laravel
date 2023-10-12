@@ -29,5 +29,5 @@ Route::post('deleteProductFromCart/{id}', [ProductController::class, 'deleteProd
 Route::post('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('validateLogin', [LoginController::class, 'validateLogin'])->name('validateLogin');
 Route::post('logoutAdmin', [AdminController::class, 'logoutAdmin'])->name('logoutAdmin');
-Route::post('deleteProduct/{id}', [AdminController::class, 'deleteProductFromDb'])->name('deleteProduct');
+Route::post('deleteProduct/{id}', [AdminController::class, 'deleteProductFromDB'])->name('deleteProduct');
 Route::post('addProduct', [AdminController::class, 'store'])->name('addProduct');

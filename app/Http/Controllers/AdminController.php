@@ -26,7 +26,7 @@ class AdminController extends Controller
         return redirect()->route('login');
     }
 
-    public function deleteProductFromDb($id)
+    public function deleteProductFromDB($id)
     {
         Product::where('id', $id)->delete();
         return redirect()->back();
