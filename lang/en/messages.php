@@ -14,6 +14,7 @@ return [
     'edit' => 'Edit',
     'email' => 'Email',
     'emptyCart' => 'The cart is empty!',
+    'error' => 'Error found',
     'index' => 'Index',
     'invalid' => 'Invalid credentials!',
     'login' => 'Login',
@@ -24,6 +25,7 @@ return [
     'price' => 'Price',
     'productsPage' => 'Products',
     'productPage' => 'Product',
+    'save' => 'save',
     'submitOrder' => 'Thank you so much for your order! Below are the products you ordered!',
     'title' => 'Title',
     'userName' => 'Username'

@@ -18,19 +18,13 @@ class CheckoutController extends Controller
         if ($idProductsInCart) {
             $products = Product::whereIn('id', $idProductsInCart)->get();
 
-            if ($products) {
-                // mail from user to admin
-                $toUser = false;
-                $toAdmin = true;
-                Mail::to(env('MAIL_FROM_ADDRESS'))->send(new CheckoutMail($toUser, $toAdmin, $products, $toMail));
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new CheckoutMail($products, $toMail));
 
-                // mail from admin to user
-                $toUser = true;
-                $toAdmin = false;
-                Mail::to($toMail)->send(new CheckoutMail($toUser, $toAdmin, $products, env('MAIL_FROM_ADDRESS')));
-                session()->forget('cart');
-                return redirect()->route('index');
-            }
+
+            session()->forget('cart');
+            return redirect()->route('index');
+        } else {
+            throw new \ErrorException(trans('messages.error'));
         }
     }
 }

@@ -25,10 +25,10 @@ class ProductController extends Controller
             $products = Product::whereIn('id', $cartSession)->get();
 
             if ($products) {
-                return view('cart', ['products' =>  $products, 'toAdmin' => false, 'toUser' => false]);
+                return view('cart', ['products' =>  $products, 'mail' => false]);
             }
         } else {
-            return view('cart', ['toAdmin' => false, 'toUser' => false, 'empty' =>  trans('messages.emptyCart')]);
+            return view('cart', ['mail' => false, 'empty' =>  trans('messages.emptyCart')]);
         }
     }
     public function store($id)

@@ -16,7 +16,7 @@
                         <p>{{ trans('messages.price') }}:{{ $product->price }}</p>
                     </div>
                     <div class="buttons">
-                        <a href={{ route('editProduct', [$product->id]) }}>{{ trans('messages.edit') }}</a>
+                        <a href={{ route('editProductView', [$product->id]) }}>{{ trans('messages.edit') }}</a>
                         <input type="submit" class="deleteProducts" name="delete" value="{{ trans('messages.delete') }}">
                     </div>
                 </form>
