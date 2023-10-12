@@ -14,7 +14,7 @@ class LoginController extends Controller
         if(!session('admin')){
             return view('login');
         }else{
-            return view('products');
+            return redirect()->route('products');
         }
     }
 

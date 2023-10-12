@@ -20,10 +20,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ProductController::class, 'index'])->name('index');
 Route::get('/cart', [ProductController::class, 'cart'])->name('cart');
 Route::get('login',  [LoginController::class, 'viewLogin'])->name('login');
-Route::get('products', [AdminController::class, 'productsView']);
+Route::get('products', [AdminController::class, 'productsView'])->name('products');
+Route::get('addProduct', [AdminController::class, 'addProductView'])->name('addProduct');
+Route::get('editProduct/{id}', [AdminController::class, 'editProduct'])->name('editProduct');
 
 Route::post('addToCart/{id}', [ProductController::class, 'store'])->name('addToCart');
-Route::post('deleteProduct/{id}', [ProductController::class, 'deleteProductFromCart'])->name('deleteProductFromCart');
+Route::post('deleteProductFromCart/{id}', [ProductController::class, 'deleteProductFromCart'])->name('deleteProductFromCart');
 Route::post('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('validateLogin', [LoginController::class, 'validateLogin'])->name('validateLogin');
 Route::post('logoutAdmin', [AdminController::class, 'logoutAdmin'])->name('logoutAdmin');
+Route::post('deleteProduct/{id}', [AdminController::class, 'deleteProductFromDb'])->name('deleteProduct');

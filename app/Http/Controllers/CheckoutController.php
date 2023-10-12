@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ValidateRequest;
+use App\Http\Requests\ValidateCheckoutRequest;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CheckoutMail;
@@ -10,7 +10,7 @@ use App\Models\Product;
 
 class CheckoutController extends Controller
 {
-    public function checkout(ValidateRequest $request)
+    public function checkout(ValidateCheckoutRequest $request)
     {
         $idProductsInCart = session()->get('cart');
         $toMail = $request->input('contactDetails');
@@ -28,7 +28,7 @@ class CheckoutController extends Controller
                 $toUser = true;
                 $toAdmin = false;
                 Mail::to($toMail)->send(new CheckoutMail($toUser, $toAdmin, $products, env('MAIL_FROM_ADDRESS')));
-                session()->flush();
+                session()->forget('cart');
                 return redirect()->route('index');
             }
         }

@@ -1,8 +1,8 @@
-@include('layouts.header')
+@extends('layouts.app')
+@section('title', trans('messages.login'))
 
-<title>{{ trans('messages.login') }}</title>
+@section('content')
 
-<body>
     <form action="{{ route('validateLogin') }}" method="POST">
         @csrf
         <div class="container">
@@ -26,4 +26,4 @@
         </div>
     </form>
 
-@include('layouts.footer')
+@endsection

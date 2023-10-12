@@ -1,9 +1,8 @@
-@include('layouts.header')
-<title>{{ trans('messages.index') }}</title>
-
-<body>
+@extends('layouts.app')
+@section('title', trans('messages.index'))
 
 
+@section('content')
     <div class="container">
         <h1>{{ trans('messages.index') }}</h1>
         @foreach ($allProducts as $product)
@@ -29,4 +28,4 @@
         </div>
     </div>
 
-    @include('layouts.footer')
+@endsection
