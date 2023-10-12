@@ -1,11 +1,6 @@
-<!DOCTYPE html>
+@include('layouts.header')
+<title>{{ trans('messages.cartPage') }}</title>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <title>{{ trans('messages.cartPage') }}</title>
-</head>
 
 <body>
     <div class="container">
@@ -73,6 +68,5 @@
         @endif
     </div>
 
-</body>
 
-</html>
+    @include('layouts.footer')

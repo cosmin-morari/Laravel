@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <title>{{ trans('messages.index') }}</title>
-</head>
+@include('layouts.header')
+<title>{{ trans('messages.index') }}</title>
 
 <body>
+
+
     <div class="container">
         <h1>{{ trans('messages.index') }}</h1>
         @foreach ($allProducts as $product)
@@ -32,6 +28,5 @@
             <a href="{{ route('cart') }}">{{ trans('messages.cart') }}</a>
         </div>
     </div>
-</body>
 
-</html>
+    @include('layouts.footer')

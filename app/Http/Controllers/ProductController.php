@@ -33,13 +33,12 @@ class ProductController extends Controller
     }
     public function store($id)
     {
-        $product = Product::find($id);
+        $product = Product::findOrFail($id);
         $cartSession = session()->get('cart');
 
         if ($product) {
             if (!in_array($product->id, session('cart') ?? [])) {
-                $cartSession = $product->id;
-                session()->push('cart', $cartSession);
+                session()->push('cart', $product->id);
             }
         }
 
