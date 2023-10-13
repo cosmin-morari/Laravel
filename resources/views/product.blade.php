@@ -40,24 +40,25 @@
                 <input type="submit" name="save" value="{{ trans('messages.save') }}">
             </form>
         @elseif ($destination == 'editProduct')
-            <form action="#" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('update', [$product->id]) }}" method="POST" enctype="multipart/form-data">
+                @method('PATCH')
                 @csrf
                 <input type="text" name="title" placeholder="{{ trans('messages.title') }} "
-                    value="{{ $product->title }}">
+                    value="{{ old('title') ? old('title') : $product->title }}">
                 @error('title')
                     <p style="color:red;">{{ $message }}</p>
                 @enderror
                 <br>
                 <br>
                 <input type="text" name="description" placeholder="{{ trans('messages.description') }} "
-                    value="{{ $product->description }}">
+                    value="{{ old('description') ? old('description') : $product->description }}">
                 @error('description')
                     <p style="color:red;">{{ $message }}</p>
                 @enderror
                 <br>
                 <br>
                 <input type="text" name="price" placeholder="{{ trans('messages.price') }} "
-                    value="{{ $product->price }}">
+                    value="{{ old('price') ? old('price') : $product->price }}">
                 @error('price')
                     <p style="color:red;">{{ $message }}</p>
                 @enderror

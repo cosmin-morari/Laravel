@@ -31,3 +31,4 @@ Route::post('validateLogin', [LoginController::class, 'validateLogin'])->name('v
 Route::post('logoutAdmin', [AdminController::class, 'logoutAdmin'])->name('logoutAdmin');
 Route::post('deleteProduct/{id}', [AdminController::class, 'deleteProductFromDB'])->name('deleteProduct');
 Route::post('addProduct', [AdminController::class, 'store'])->name('addProduct');
+Route::patch('editProduct/{id}', [AdminController::class, 'update'])->name('update');

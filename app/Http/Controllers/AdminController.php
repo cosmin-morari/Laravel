@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\ValidateAddProduct;
+use App\Http\Requests\ValidateEditProduct;
 
 class AdminController extends Controller
 {
@@ -57,5 +58,18 @@ class AdminController extends Controller
         $product->save();
 
         return redirect()->back();
+    }
+
+    public function update(ValidateEditProduct $request)
+    {
+        $title = $request->title;
+        $description = $request->description;
+        $price = $request->price;
+        $newImageName = time() . '-' . $request->title . '.' . $request->image->extension();
+        $request->image->move(public_path('storage/photos'), $newImageName);
+        
+        Product::where('id', $request->id)->update(['title' => $title, 'description' => $description, 'price' => $price, 'imageSource' => $newImageName]);
+
+        return redirect()->route('products');
     }
 }
