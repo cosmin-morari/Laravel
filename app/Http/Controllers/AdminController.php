@@ -67,7 +67,7 @@ class AdminController extends Controller
         $price = $request->price;
         $newImageName = time() . '-' . $request->title . '.' . $request->image->extension();
         $request->image->move(public_path('storage/photos'), $newImageName);
-        
+
         Product::where('id', $request->id)->update(['title' => $title, 'description' => $description, 'price' => $price, 'imageSource' => $newImageName]);
 
         return redirect()->route('products');
