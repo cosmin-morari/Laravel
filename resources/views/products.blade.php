@@ -29,6 +29,9 @@
                 <input type="submit" class="logout" name="logout" value="{{ trans('messages.logout') }}">
             </form>
         </div>
+        <br>
+        <br>
+        <a href="{{ route('orders') }}">{{ trans('messages.ordersPage') }}</a>
     </div>
 
 @endsection

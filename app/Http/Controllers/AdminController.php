@@ -12,13 +12,8 @@ class AdminController extends Controller
 {
     public function productsView()
     {
-
-        if (session('admin')) {
-            $products = Product::all();
-            return view('products', ['allProducts' => $products]);
-        } else {
-            return redirect()->route('login');
-        }
+        $products = Product::all();
+        return view('products', ['allProducts' => $products]);
     }
 
     public function logoutAdmin()

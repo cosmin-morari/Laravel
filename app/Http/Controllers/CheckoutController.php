@@ -25,7 +25,7 @@ class CheckoutController extends Controller
             $productsPurchased = implode(' ,', $productsInCart->toArray());
             $customerDetails = $request->input('name') . ', ' . $request->input('contactDetails') . ', ' . $request->input('comments');
 
-            // Mail::to(env('MAIL_FROM_ADDRESS'))->send(new CheckoutMail($products, $toMail));
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new CheckoutMail($products, $toMail));
 
             // insert order table
             $order = new Order;
