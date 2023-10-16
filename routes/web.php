@@ -26,7 +26,7 @@ Route::get('login',  [LoginController::class, 'viewLogin'])->name('login');
 Route::post('addToCart/{id}', [ProductController::class, 'store'])->name('addToCart');
 Route::post('deleteProductFromCart/{id}', [ProductController::class, 'deleteProductFromCart'])->name('deleteProductFromCart');
 Route::post('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-Route::post('validateLogin', [LoginController::class, 'validateLogin'])->name('validateLogin');
+Route::post('login', [LoginController::class, 'validateLogin'])->name('validateLogin');
 
 Route::group(['middleware' => ['customAuth']], function () {
     Route::get('orders', [OrdersController::class, 'viewOrders'])->name('orders');

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CheckoutMail;
 use App\Models\Product;
 use App\Models\Order;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -24,7 +25,7 @@ class CheckoutController extends Controller
             try {
                 $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
 
-                Mail::to(env('MAIL_FROM_ADDRESS'))->send(new CheckoutMail($products, $toMail));
+                Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
 
                 // insert order table
                 $order = new Order;
