@@ -42,5 +42,4 @@
         <a href="{{ route('products') }}">{{ trans('messages.productPage') }}</a>
     </div>
 
-
 @endsection
