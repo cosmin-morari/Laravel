@@ -10,10 +10,9 @@ class LoginController extends Controller
 {
     public function viewLogin()
     {
-        
-        if(!session('admin')){
+        if (!session('admin')) {
             return view('login');
-        }else{
+        } else {
             return redirect()->route('products');
         }
     }
