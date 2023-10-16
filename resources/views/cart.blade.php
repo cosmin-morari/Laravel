@@ -2,7 +2,9 @@
 @section('title', trans('messages.cartPage'))
 
 @section('content')
-
+ @isset($message)
+     {{ $message }}
+ @endisset
     <div class="container">
         @if (isset($mail) && !$mail)
             <h1>{{ trans('messages.cartPage') }}</h1>

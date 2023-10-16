@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CheckoutMail;
 use App\Models\Product;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class CheckoutController extends Controller
 {
@@ -16,44 +18,44 @@ class CheckoutController extends Controller
     {
         $idProductsInCart = session()->get('cart');
         $toMail = $request->input('contactDetails');
+        $products = Product::whereIn('id', $idProductsInCart)->get();
 
-        if ($idProductsInCart) {
-            $products = Product::whereIn('id', $idProductsInCart)->get();
+        if (!empty($products)) {
+            try {
+                $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
 
-            $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
-            $productsInCart = Product::whereIn('id', $idProductsInCart)->pluck('title');
-            $productsPurchased = implode(' ,', $productsInCart->toArray());
-            $customerDetails = $request->input('name') . ', ' . $request->input('contactDetails') . ', ' . $request->input('comments');
+                Mail::to(env('MAIL_FROM_ADDRESS'))->send(new CheckoutMail($products, $toMail));
 
-            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new CheckoutMail($products, $toMail));
+                // insert order table
+                $order = new Order;
+                $order->date = now();
+                $order->name = $request->input('name');
+                $order->contactDetails = $request->input('contactDetails');
+                $order->comments = $request->input('comments');
+                $order->total_price = $totalPrice;
+                $order->save();
 
-            // insert order table
-            $order = new Order;
-            $order->date = now();
-            $order->customer_details = $customerDetails;
-            $order->purchased_products = $productsPurchased;
-            $order->total_price = $totalPrice;
-            $order->save();
+                //insert pivot table
+                $pivot = new products_orders;
+                $lastIdOrder = $order->latest()->first()->id;
 
-            //insert pivot table
-            $pivot = new products_orders;
-            $lastIdOrder = $order->latest()->first()->id;
+                $insertData = array_reduce($idProductsInCart, function ($carry, $product_id) use ($lastIdOrder) {
+                    $carry[] = [
+                        'product_id' => $product_id,
+                        'order_id' => $lastIdOrder
+                    ];
 
-            $insertData = array_reduce($idProductsInCart, function ($carry, $product_id) use ($lastIdOrder) {
-                $carry[] = [
-                    'product_id' => $product_id,
-                    'order_id' => $lastIdOrder
-                ];
+                    return $carry;
+                }, []);
 
-                return $carry;
-            }, []);
-
-            $pivot->insert($insertData);
-
+                $pivot->insert($insertData);
+            } catch (Throwable $err) {
+                Log::error($err);
+            }
             session()->forget('cart');
             return redirect()->route('index');
         } else {
-            throw new \ErrorException(trans('messages.error'));
+            return redirect()->route('cart')->with('message', trans('messages.error'));
         }
     }
 }
