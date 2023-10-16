@@ -6,7 +6,8 @@ use App\Models\Product;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
-
+use App\Http\Requests\ValidateAddProduct;
+use App\Http\Requests\ValidateEditProduct;
 
 class ProductController extends Controller
 {
@@ -50,5 +51,51 @@ class ProductController extends Controller
         $index = array_search($id, $cartSession);
         session()->forget("cart.$index");
         return redirect()->back();
+    }
+
+    public function deleteProductFromDB($id)
+    {
+        Product::where('id', $id)->delete();
+        return redirect()->back();
+    }
+
+    public function update(ValidateEditProduct $request)
+    {
+        $title = $request->title;
+        $description = $request->description;
+        $price = $request->price;
+        $newImageName = time() . '-' . $request->title . '.' . $request->image->extension();
+        $request->image->move(public_path('storage/photos'), $newImageName);
+
+        Product::where('id', $request->id)->update(['title' => $title, 'description' => $description, 'price' => $price, 'imageSource' => $newImageName]);
+
+        return redirect()->route('products');
+    }
+
+    public function storeProduct(ValidateAddProduct $request)
+    {
+        $newImageName = time() . '-' . $request->title . '.' . $request->image->extension();
+        $request->image->move(public_path('storage/photos'), $newImageName);
+
+        $product = new Product;
+        $product->title = $request->title;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->imageSource = $newImageName;
+
+        $product->save();
+
+        return redirect()->back();
+    }
+
+    public function editProductView($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('product', ['product' => $product, 'destination' => 'editProduct']);
+    }
+
+    public function addProductView()
+    {
+        return view('product', ['destination' => 'addProduct']);
     }
 }

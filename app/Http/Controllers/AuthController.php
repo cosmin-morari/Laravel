@@ -6,8 +6,13 @@ use Illuminate\Routing\Controller;
 use App\Http\Requests\AdminAuthorization;
 use Illuminate\Support\Facades\Config;
 
-class LoginController extends Controller
-{
+class AuthController extends Controller
+{   
+    public function logoutAdmin()
+    {
+        session()->forget('admin');
+        return redirect()->route('login');
+    }
     public function viewLogin()
     {
         if (!session('admin')) {
