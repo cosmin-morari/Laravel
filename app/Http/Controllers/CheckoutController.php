@@ -22,6 +22,7 @@ class CheckoutController extends Controller
         $products = Product::whereIn('id', $idProductsInCart)->get();
 
         if (!empty($products)) {
+            
             try {
                 $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
 
@@ -37,7 +38,6 @@ class CheckoutController extends Controller
                 $order->save();
 
                 //insert pivot table
-               
                 $order->products()->attach($idProductsInCart);
             } catch (Throwable $err) {
                 Log::error($err);

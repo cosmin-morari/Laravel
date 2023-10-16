@@ -28,9 +28,8 @@
                             <td>{{ $order->contactDetails }}</td>
                             <td>{{ $order->comments }}</td>
                             <td>{{ $order->total_price }}</td>
-                            <td>{{ $order->actionViewOrder }}</td>
                             <td>
-                                <a href="{{ route('order', [$order->id]) }}">{{ trans('messages.seeOrder') }}</a>
+                                <a href="{{ route('order', $order->id) }}">{{ trans('messages.seeOrder') }}</a>
                             </td>
                         </tr>
                     @endforeach
