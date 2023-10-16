@@ -10,15 +10,21 @@
             <thead>
                 <tr>
                     <th>{{ trans('messages.id') }}</th>
-                    <th>{{ trans('messages.checkoutInformation') }}</th>
+                    <th>{{ trans('messages.date') }}</th>
+                    <th>{{ trans('messages.name') }}</th>
+                    <th>{{ trans('messages.contactDetails') }}</th>
+                    <th>{{ trans('messages.comments') }}</th>
                     <th>{{ trans('messages.purchasedProducts') }}</th>
                 </tr>
                 
             </thead>
             <tbody>
                 <td>{{ $order->id }}</td>
-                <td>{{ $order->customer_details }}</td>
-                <td>{{ $order->purchased_products	 }}</td>
+                <td>{{ $order->date }}</td>
+                <td>{{ $order->name }}</td>
+                <td>{{ $order->contactDetails	}}</td>
+                <td>{{ $order->comments	}}</td>
+                <td>{{$products}}</td>
             </tbody>
         </table>
         <a href="{{ route('orders') }}">{{ trans('messages.ordersPage') }}</a>

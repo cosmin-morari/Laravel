@@ -12,8 +12,9 @@
                     <tr>
                         <th>{{ trans('messages.id') }}</th>
                         <th>{{ trans('messages.date') }}</th>
-                        <th>{{ trans('messages.customerDetails') }}</th>
-                        <th>{{ trans('messages.purchasedProducts') }}</th>
+                        <th>{{ trans('messages.name') }}</th>
+                        <th>{{ trans('messages.contactDetails') }}</th>
+                        <th>{{ trans('messages.comments') }}</th>
                         <th>{{ trans('messages.totalPrice') }}</th>
                         <th>{{ trans('messages.actionViewOrder') }}</th>
                     </tr>
@@ -23,9 +24,11 @@
                         <tr>
                             <td>{{ $order->id }}</td>
                             <td>{{ $order->date }}</td>
-                            <td>{{ $order->customer_details }}</td>
-                            <td>{{ $order->purchased_products }}</td>
+                            <td>{{ $order->name }}</td>
+                            <td>{{ $order->contactDetails }}</td>
+                            <td>{{ $order->comments }}</td>
                             <td>{{ $order->total_price }}</td>
+                            <td>{{ $order->actionViewOrder }}</td>
                             <td>
                                 <a href="{{ route('order', [$order->id]) }}">{{ trans('messages.seeOrder') }}</a>
                             </td>

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CheckoutMail;
 use App\Models\Product;
 use App\Models\Order;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -37,19 +37,8 @@ class CheckoutController extends Controller
                 $order->save();
 
                 //insert pivot table
-                $pivot = new products_orders;
-                $lastIdOrder = $order->latest()->first()->id;
-
-                $insertData = array_reduce($idProductsInCart, function ($carry, $product_id) use ($lastIdOrder) {
-                    $carry[] = [
-                        'product_id' => $product_id,
-                        'order_id' => $lastIdOrder
-                    ];
-
-                    return $carry;
-                }, []);
-
-                $pivot->insert($insertData);
+               
+                $order->products()->attach($idProductsInCart);
             } catch (Throwable $err) {
                 Log::error($err);
             }
