@@ -16,6 +16,8 @@ return [
     'description' => 'Description',
     'edit' => 'Edit',
     'email' => 'Email',
+    'emailError' => 'The email was not sent successfully!',
+    'emailSucces' => 'The email was sent successfully!',
     'emptyCart' => 'The cart is empty!',
     'error' => 'Error found',
     'id' => 'Id',

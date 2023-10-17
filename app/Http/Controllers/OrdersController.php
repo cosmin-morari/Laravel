@@ -6,11 +6,10 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\ValidateCheckoutRequest;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CheckoutMail;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class OrdersController extends Controller
 {
@@ -34,15 +33,19 @@ class OrdersController extends Controller
     public function checkout(ValidateCheckoutRequest $request)
     {
         $idProductsInCart = session()->get('cart');
-        $toMail = $request->input('contactDetails');
         $products = Product::whereIn('id', $idProductsInCart)->get();
 
-        if (!empty($products)) {
+        if (empty($products)) {
+            throw ValidationException::withMessages([
+                'cart' => [trans('messages.error')],
+            ])->status(422);
+        }
 
-            // try {
+        try {
             $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
 
-            // Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
+            $toMail = $request->input('contactDetails');
+            Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
 
             // insert order table
             $order = new Order;
@@ -55,14 +58,14 @@ class OrdersController extends Controller
 
             //insert pivot table
             $order->products()->attach($idProductsInCart);
-            // } catch (Throwable $err) {
-            //     Log::error($err);
-            // }
-            session()->forget('cart');
-            return redirect()->route('index');
-        } else {
-            return redirect()->route('cart')->with('message', trans('messages.error'));
+        } catch (\Exception $err) {
+            Log::error($err);
+            throw ValidationException::withMessages([
+                'cart' => [trans('messages.error')]
+            ])->status(422);
         }
+        session()->forget('cart');
+        return redirect()->route('index');
     }
 
     public function productsView()
