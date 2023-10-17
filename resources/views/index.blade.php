@@ -5,6 +5,9 @@
 @section('content')
     <div class="container">
         <h1>{{ trans('messages.index') }}</h1>
+        @error('quantity')
+            <p style="color:red;">{{ $message }}</p>
+        @enderror
         @foreach ($allProducts as $product)
             <div class="content">
                 <form action="{{ route('addToCart', [$product->id]) }}" method="POST">
@@ -16,6 +19,11 @@
                         <p>{{ trans('messages.title') }}:{{ $product->title }}</p>
                         <p>{{ trans('messages.description') }}:{{ $product->description }}</p>
                         <p>{{ trans('messages.price') }}:{{ $product->price }}</p>
+                        <p>{{ trans('messages.quantity') }}:{{ $product->quantity }}</p>
+                        <input type="number" name="quantity" value="1">
+                        @if (session('error' . $product->id))
+                            <p style="color:red;">{{ session('error' . $product->id) }}</p>
+                        @endif
                     </div>
                     <div class="addToCart">
                         <button type="submit" class="addToCartBtn">{{ trans('messages.add') }}</button>
@@ -27,5 +35,4 @@
             <a href="{{ route('cart') }}">{{ trans('messages.cart') }}</a>
         </div>
     </div>
-
 @endsection

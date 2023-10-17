@@ -21,6 +21,7 @@ return [
     'emptyCart' => 'The cart is empty!',
     'error' => 'Error found',
     'id' => 'Id',
+    'insufficientStock' => 'The stock is insufficient.',
     'index' => 'Index',
     'invalid' => 'Invalid credentials!',
     'login' => 'Login',
@@ -34,10 +35,12 @@ return [
     'productsPage' => 'Products',
     'productPage' => 'Product',
     'purchasedProducts' => 'Purchased Products',
+    'quantity' => 'Quantity',
     'save' => 'save',
     'seeOrder' => 'See the order',
     'submitOrder' => 'Thank you so much for your order! Below are the products you ordered!',
     'title' => 'Title',
     'totalPrice' => 'Total Price',
+    'update' => 'Update',
     'userName' => 'Username'
 ];

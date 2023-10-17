@@ -23,7 +23,7 @@ Route::get('/cart', [ProductController::class, 'cart'])->name('cart');
 Route::get('login',  [AuthController::class, 'viewLogin'])->name('login');
 
 Route::post('addToCart/{id}', [ProductController::class, 'store'])->name('addToCart');
-Route::post('deleteProductFromCart/{id}', [ProductController::class, 'deleteProductFromCart'])->name('deleteProductFromCart');
+Route::post('deleteUpdateProductFromCart/{id}', [ProductController::class, 'deleteUpdateProductFromCart'])->name('deleteUpdateProductFromCart');
 Route::post('checkout', [OrdersController::class, 'checkout'])->name('checkout');
 Route::post('login', [AuthController::class, 'validateLogin'])->name('validateLogin');
 

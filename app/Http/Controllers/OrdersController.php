@@ -35,17 +35,17 @@ class OrdersController extends Controller
         $idProductsInCart = session()->get('cart');
         $products = Product::whereIn('id', $idProductsInCart)->get();
 
-        if (empty($products)) {
-            throw ValidationException::withMessages([
-                'cart' => [trans('messages.error')],
-            ])->status(422);
-        }
+        // if (empty($products)) {
+        //     throw ValidationException::withMessages([
+        //         'cart' => [trans('messages.error')],
+        //     ])->status(422);
+        // }
 
-        try {
+        // try {
             $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
 
-            $toMail = $request->input('contactDetails');
-            Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
+        //     $toMail = $request->input('contactDetails');
+        //     Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
 
             // insert order table
             $order = new Order;
@@ -58,12 +58,13 @@ class OrdersController extends Controller
 
             //insert pivot table
             $order->products()->attach($idProductsInCart);
-        } catch (\Exception $err) {
-            Log::error($err);
-            throw ValidationException::withMessages([
-                'cart' => [trans('messages.error')]
-            ])->status(422);
-        }
+        // } catch (\Exception $err) {
+        //     Log::error($err);
+        //     throw ValidationException::withMessages([
+        //         'cart' => [trans('messages.error')]
+        //     ])->status(422);
+        // }
+        session()->forget('cartQuantity');
         session()->forget('cart');
         return redirect()->route('index');
     }

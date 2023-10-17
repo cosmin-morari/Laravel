@@ -2,6 +2,10 @@
 @section('title', trans('messages.cartPage'))
 
 @section('content')
+
+
+
+
     <div class="container">
         @if (isset($mail) && !$mail)
             <h1>{{ trans('messages.cartPage') }}</h1>
@@ -11,7 +15,7 @@
         @if (isset($products))
             @foreach ($products as $product)
                 <div class="content">
-                    <form action="{{ route('deleteProductFromCart', [$product->id]) }}" method="POST">
+                    <form action="{{ route('deleteUpdateProductFromCart', [$product->id]) }}" method="POST">
                         @csrf
                         <div class="img">
                             <img src="{{ asset('storage/photos/' . $product->imageSource) }}" alt="">
@@ -20,10 +24,17 @@
                             <p>{{ trans('messages.title') }}:{{ $product->title }}</p>
                             <p>{{ trans('messages.description') }}:{{ $product->description }}</p>
                             <p>{{ trans('messages.price') }}:{{ $product->price }}</p>
+                            <p>{{ trans('messages.quantity') }}:
+                            @foreach ($cartQuantity as $quantity)
+                                @if (isset($quantity[$product->id]))
+                                    <input type="number" name="quantity" value="{{ $quantity[$product->id] }}">
+                                    <input type="submit" name="update" value="{{ trans('messages.update') }}">
+                                @endif
+                            @endforeach
                         </div>
                         @if (isset($mail) && !$mail)
                             <div>
-                                <button type="submit" class="RemoveBtn">{{ trans('messages.delete') }}</button>
+                                <button type="submit" name ="delete" value="delete" class="RemoveBtn">{{ trans('messages.delete') }}</button>
                             </div>
                         @endif
                     </form>

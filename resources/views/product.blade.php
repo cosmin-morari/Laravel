@@ -29,7 +29,13 @@
                 @enderror
                 <br>
                 <br>
-
+                <input type="text" name="quantity" placeholder="{{ trans('messages.quantity') }} "
+                    value="{{ old('quantity') }}">
+                @error('quantity')
+                    <p style="color:red;">{{ $message }}</p>
+                @enderror
+                <br>
+                <br>
                 <input type="file" name="image" id="file" class="inputFile">
                 @error('image')
                     <p style="color:red;">{{ $message }}</p>
@@ -60,6 +66,13 @@
                 <input type="text" name="price" placeholder="{{ trans('messages.price') }} "
                     value="{{ old('price') ? old('price') : $product->price }}">
                 @error('price')
+                    <p style="color:red;">{{ $message }}</p>
+                @enderror
+                <br>
+                <br>
+                <input type="text" name="quantity" placeholder="{{ trans('messages.quantity') }} "
+                    value="{{ old('quantity') ? old('quantity') : $product->quantity }}">
+                @error('quantity')
                     <p style="color:red;">{{ $message }}</p>
                 @enderror
                 <br>
