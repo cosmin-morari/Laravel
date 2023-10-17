@@ -20,6 +20,7 @@ class ProductController extends Controller
         $products = ($cartSession) ? Product::whereNotIn('id', $cartSession)->get() : Product::all();
         return view('index', ['allProducts' => $products]);
     }
+    
     public function cart()
     {
         $cartSession = session()->get('cart');

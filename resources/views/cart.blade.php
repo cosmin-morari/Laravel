@@ -25,12 +25,14 @@
                             <p>{{ trans('messages.description') }}:{{ $product->description }}</p>
                             <p>{{ trans('messages.price') }}:{{ $product->price }}</p>
                             <p>{{ trans('messages.quantity') }}:
+
                             @foreach ($cartQuantity as $quantity)
                                 @if (isset($quantity[$product->id]))
                                     <input type="number" name="quantity" value="{{ $quantity[$product->id] }}">
                                     <input type="submit" name="update" value="{{ trans('messages.update') }}">
                                 @endif
                             @endforeach
+                            
                         </div>
                         @if (isset($mail) && !$mail)
                             <div>
