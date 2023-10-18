@@ -33,19 +33,20 @@ class OrdersController extends Controller
     public function checkout(ValidateCheckoutRequest $request)
     {
         $idProductsInCart = session()->get('cart');
+        $cartQuantity = session()->get('cartQuantity');
         $products = Product::whereIn('id', $idProductsInCart)->get();
 
-        // if (empty($products)) {
-        //     throw ValidationException::withMessages([
-        //         'cart' => [trans('messages.error')],
-        //     ])->status(422);
-        // }
+        if (empty($products)) {
+            throw ValidationException::withMessages([
+                'cart' => [trans('messages.error')],
+            ])->status(422);
+        }
 
         // try {
             $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
 
-        //     $toMail = $request->input('contactDetails');
-        //     Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
+            // $toMail = $request->input('contactDetails');
+            // Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
 
             // insert order table
             $order = new Order;
@@ -56,8 +57,21 @@ class OrdersController extends Controller
             $order->total_price = $totalPrice;
             $order->save();
 
+          
+
             //insert pivot table
-            $order->products()->attach($idProductsInCart);
+            foreach($cartQuantity as $val ){
+                foreach( $idProductsInCart as $values){  
+                    $items[]=$val[$values];       
+                // $order->products()->attach( $idProductsInCart, ['quantity'=>$val[$values]]);
+                }
+                
+            }
+            foreach($items as $item){
+
+                $order->products()->attach( $idProductsInCart, ['quantity'=>$item]);
+            } 
+            
         // } catch (\Exception $err) {
         //     Log::error($err);
         //     throw ValidationException::withMessages([

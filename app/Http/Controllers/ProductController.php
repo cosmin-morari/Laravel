@@ -20,7 +20,7 @@ class ProductController extends Controller
         $products = ($cartSession) ? Product::whereNotIn('id', $cartSession)->get() : Product::all();
         return view('index', ['allProducts' => $products]);
     }
-    
+
     public function cart()
     {
         $cartSession = session()->get('cart');
@@ -35,27 +35,33 @@ class ProductController extends Controller
             return view('cart', ['mail' => false, 'empty' =>  trans('messages.emptyCart')]);
         }
     }
-    public function store(ValidateQuantity $request, $id)
+    public function store($id)
     {
-        $quantity = $request->input('quantity');
         $product = Product::findOrFail($id);
-        $totalQuantity = $product->quantity;
-
-        if ($quantity > $totalQuantity) {
-            return redirect()->back()->with('error' . $id, trans('messages.insufficientStock'));
-        }
 
         if ($product) {
             if (!in_array($product->id, session('cart') ?? [])) {
                 session()->push('cart', $product->id);
-                session()->push('cartQuantity', [$product->id => $quantity]);
+                $initialValue = 1;
+                session()->push('cartQuantity', [$product->id => $initialValue]);
             }
         }
         return redirect()->back();
     }
-    public function deleteUpdateProductFromCart(Request $request, $id)
+    public function cartCheckout(ValidateQuantity $request, $id)
     {
-        $product = Product::findOrFail($id);
+        $quantity = $request->input('quantity');
+        $cartQuantity = session('cartQuantity');
+
+        if ($request->input('setQuantity')) {
+            foreach ($cartQuantity as $key => $value) {
+                if (isset($value[$id])) {
+                    $cartQuantity[$key][$id] = $quantity;
+                }
+            }
+            session()->put('cartQuantity', $cartQuantity);
+        }
+
         if ($request->input('delete')) {
             $cartSession = session()->get('cart');
             $index = array_search($id, $cartSession);
@@ -63,21 +69,6 @@ class ProductController extends Controller
             session()->forget("cartQuantity.$index");
         }
 
-        if ($request->input('update')) {
-            $valueInput = $request->input('quantity');
-
-            if (session()->has('cartQuantity')) {
-                $cartQuantity = session()->get('cartQuantity');
-            
-                foreach ($cartQuantity as $quantity => $value){
-                    $cartQuantity[$quantity ]= $valueInput;
-                    // $quantity[$id]= $valueInput;
-                }
-                                
-                
-            
-            }
-        }
         return redirect()->back();
     }
 

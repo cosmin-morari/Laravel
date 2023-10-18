@@ -35,12 +35,13 @@ return [
     'productsPage' => 'Products',
     'productPage' => 'Product',
     'purchasedProducts' => 'Purchased Products',
-    'quantity' => 'Quantity',
+    'setQuantity' => 'Set quantity',
     'save' => 'save',
     'seeOrder' => 'See the order',
     'submitOrder' => 'Thank you so much for your order! Below are the products you ordered!',
     'title' => 'Title',
     'totalPrice' => 'Total Price',
     'update' => 'Update',
-    'userName' => 'Username'
+    'userName' => 'Username',
+    'yourQuantity' => 'Quantity'
 ];

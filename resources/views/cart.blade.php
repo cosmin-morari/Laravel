@@ -15,7 +15,7 @@
         @if (isset($products))
             @foreach ($products as $product)
                 <div class="content">
-                    <form action="{{ route('deleteUpdateProductFromCart', [$product->id]) }}" method="POST">
+                    <form action="{{ route('cartCheckout', [$product->id]) }}" method="POST">
                         @csrf
                         <div class="img">
                             <img src="{{ asset('storage/photos/' . $product->imageSource) }}" alt="">
@@ -24,24 +24,39 @@
                             <p>{{ trans('messages.title') }}:{{ $product->title }}</p>
                             <p>{{ trans('messages.description') }}:{{ $product->description }}</p>
                             <p>{{ trans('messages.price') }}:{{ $product->price }}</p>
-                            <p>{{ trans('messages.quantity') }}:
-
-                            @foreach ($cartQuantity as $quantity)
-                                @if (isset($quantity[$product->id]))
-                                    <input type="number" name="quantity" value="{{ $quantity[$product->id] }}">
-                                    <input type="submit" name="update" value="{{ trans('messages.update') }}">
-                                @endif
-                            @endforeach
-                            
+                            @if (isset($mail) && !$mail)
+                            <p>{{ trans('messages.setQuantity') }}:</p>
+                                @foreach (session('cartQuantity') as $item)
+                                    @foreach ($item as $key => $value)
+                                        @if ($key == $product->id)
+                                            <input type="number" name="quantity" value="{{ $value }}">
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                                <input type="submit" name="setQuantity" value="{{ trans('messages.update') }}">
+                            @elseif (isset($mail) && $mail)
+                                @foreach (session('cartQuantity') as $item)
+                                    @foreach ($item as $key => $value)
+                                        @if ($key == $product->id)
+                                            <p>{{ trans('messages.yourQuantity') }}:
+                                                {{ $value }}</p>
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            @endif
                         </div>
                         @if (isset($mail) && !$mail)
                             <div>
-                                <button type="submit" name ="delete" value="delete" class="RemoveBtn">{{ trans('messages.delete') }}</button>
+                                <button type="submit" name ="delete" value="delete"
+                                    class="RemoveBtn">{{ trans('messages.delete') }}</button>
                             </div>
                         @endif
                     </form>
                 </div>
             @endforeach
+            @error('quantity')
+                <p style="color:red;">{{ $message }}</p>
+            @enderror
             @if (isset($mail) && !$mail)
                 <form action="{{ route('checkout') }}" class="checkOut" method="POST">
                     @csrf
@@ -76,6 +91,7 @@
             </div>
         @endif
     </div>
+
 
 
 @endsection

@@ -25,7 +25,6 @@ class ValidateAddProduct extends FormRequest
             'title' => 'required',
             'description' => 'required',
             'price' => 'required|integer',
-            'quantity'=> 'required|integer',
             'image' => 'required|image'
         ];
     }

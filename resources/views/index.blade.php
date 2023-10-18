@@ -19,13 +19,6 @@
                         <p>{{ trans('messages.title') }}:{{ $product->title }}</p>
                         <p>{{ trans('messages.description') }}:{{ $product->description }}</p>
                         <p>{{ trans('messages.price') }}:{{ $product->price }}</p>
-                        <p>{{ trans('messages.quantity') }}:{{ $product->quantity }}</p>
-                        <input type="number" name="quantity" value="1">
-
-                        @if (session('error' . $product->id))
-                            <p style="color:red;">{{ session('error' . $product->id) }}</p>
-                        @endif
-                        
                     </div>
                     <div class="addToCart">
                         <button type="submit" class="addToCartBtn">{{ trans('messages.add') }}</button>

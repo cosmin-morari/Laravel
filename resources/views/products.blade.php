@@ -14,7 +14,6 @@
                         <p>{{ trans('messages.title') }}:{{ $product->title }}</p>
                         <p>{{ trans('messages.description') }}:{{ $product->description }}</p>
                         <p>{{ trans('messages.price') }}:{{ $product->price }}</p>
-                        <p>{{ trans('messages.quantity') }}:{{ $product->quantity }}</p>
                     </div>
                     <div class="buttons">
                         <a href={{ route('editProductView', [$product->id]) }}>{{ trans('messages.edit') }}</a>
