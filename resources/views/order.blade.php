@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', trans('messages.order'))
 
-
 @section('content')
 
     <div class="content">
@@ -10,28 +9,24 @@
             <thead>
                 <tr>
                     <th>{{ trans('messages.id') }}</th>
-                    <th>{{ trans('messages.date') }}</th>
+                    <th>{{ trans('messages.image') }}</th>
                     <th>{{ trans('messages.name') }}</th>
-                    <th>{{ trans('messages.contactDetails') }}</th>
-                    <th>{{ trans('messages.comments') }}</th>
-                    <th>{{ trans('messages.purchasedProducts') }}</th>
+                    <th>{{ trans('messages.yourQuantity') }}</th>
+                    <th>{{ trans('messages.totalPrice') }}</th>
                 </tr>
 
             </thead>
-            <tbody>
-                <td>{{ $order->id }}</td>
-                <td>{{ $order->date }}</td>
-                <td>{{ $order->name }}</td>
-                <td>{{ $order->contactDetails }}</td>
-                <td>{{ $order->comments }}</td>
-                <td>
-                    @foreach ($products as $product => $element)
-                        {{ $product . '=>' . $element }}
-                    @endforeach
-                </td>
-            </tbody>
+
+            @foreach ($order->products as $product)
+                <tbody>
+                    <td>{{ $order->id }}</td>
+                    <td><img src="{{ asset('storage/photos/' . $product->imageSource) }}" alt=""></td>
+                    <td>{{ $product->title }}</td>
+                    <td>{{ $product->pivot->quantity }}</td>
+                    <td>{{ $product->price * $product->pivot->quantity }}</td>
+                </tbody>
+            @endforeach
         </table>
         <a href="{{ route('orders') }}">{{ trans('messages.ordersPage') }}</a>
     </div>
-
 @endsection

@@ -21,6 +21,7 @@ return [
     'emptyCart' => 'The cart is empty!',
     'error' => 'Error found',
     'id' => 'Id',
+    'image' => 'Image',
     'insufficientStock' => 'The stock is insufficient.',
     'index' => 'Index',
     'invalid' => 'Invalid credentials!',

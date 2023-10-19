@@ -22,12 +22,8 @@ class OrdersController extends Controller
     public function viewOrder($id)
     {
         $order = Order::findOrFail($id);
-        // $products = $order->products()->pluck('products.price', 'products.title')->toArray();
-        // $products = Order::with('products')->pluck('price', 'title')->toArray();
-        $products = Order::with('order_product:id, order_product, order_id, product_id, price')->get();
-        dd($products);
 
-        return view('order', ['order' => $order, 'products' => $products]);
+        return view('order', ['order' => $order]);
     }
 
     public function checkout(ValidateCheckoutRequest $request)
@@ -42,11 +38,11 @@ class OrdersController extends Controller
             ])->status(422);
         }
 
-        // try {
+        try {
             $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
 
-            // $toMail = $request->input('contactDetails');
-            // Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
+            $toMail = $request->input('contactDetails');
+            Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
 
             // insert order table
             $order = new Order;
@@ -57,27 +53,21 @@ class OrdersController extends Controller
             $order->total_price = $totalPrice;
             $order->save();
 
-          
+
 
             //insert pivot table
-            foreach($cartQuantity as $val ){
-                foreach( $idProductsInCart as $values){  
-                    $items[]=$val[$values];       
-                // $order->products()->attach( $idProductsInCart, ['quantity'=>$val[$values]]);
-                }
-                
-            }
-            foreach($items as $item){
 
-                $order->products()->attach( $idProductsInCart, ['quantity'=>$item]);
-            } 
-            
-        // } catch (\Exception $err) {
-        //     Log::error($err);
-        //     throw ValidationException::withMessages([
-        //         'cart' => [trans('messages.error')]
-        //     ])->status(422);
-        // }
+            $cartQuantityMaped = array_map('current', $cartQuantity);
+            foreach ($cartQuantityMaped as $items => $quantity) {
+                $value = $quantity;
+                $order->products()->attach([$idProductsInCart[$items] => ['quantity' => $value]]);
+            }
+        } catch (\Exception $err) {
+            Log::error($err);
+            throw ValidationException::withMessages([
+                'cart' => [trans('messages.error')]
+            ])->status(422);
+        }
         session()->forget('cartQuantity');
         session()->forget('cart');
         return redirect()->route('index');
