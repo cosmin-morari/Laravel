@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'actionViewOrder' => 'actionViewOrder',
+    'actionViewOrder' => 'View Order',
     'add' => 'Add',
     'addProduct' => 'Add product',
     'cart' => 'Go to cart',

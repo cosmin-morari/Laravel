@@ -21,10 +21,11 @@
                     <td><img src="{{ asset('storage/photos/' . $product->imageSource) }}" alt=""></td>
                     <td>{{ $product->title }}</td>
                     <td>{{ $product->pivot->quantity }}</td>
-                    <td>{{ $product->price * $product->pivot->quantity }}</td>
+                    <td>{{ $product->pivot->quantity * $product->pivot->checkout_price }}</td>
                 </tbody>
             @endforeach
         </table>
         <a href="{{ route('orders') }}">{{ trans('messages.ordersPage') }}</a>
     </div>
+
 @endsection

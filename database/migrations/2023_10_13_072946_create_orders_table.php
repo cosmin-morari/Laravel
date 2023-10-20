@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('contactDetails');
             $table->string('comments');
-            $table->integer('total_price');
             $table->timestamps();
         });
     }

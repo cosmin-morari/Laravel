@@ -39,7 +39,6 @@ class OrdersController extends Controller
         
         }
         try {
-            $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
 
             $toMail = $request->input('contactDetails');
             Mail::to(config('credentialsAdmin.adminEmail'))->send(new CheckoutMail($products, $toMail));
@@ -50,7 +49,6 @@ class OrdersController extends Controller
             $order->name = $request->input('name');
             $order->contactDetails = $request->input('contactDetails');
             $order->comments = $request->input('comments');
-            $order->total_price = $totalPrice;
             $order->save();
 
 
@@ -60,7 +58,8 @@ class OrdersController extends Controller
             $cartQuantityMaped = array_map('current', $cartQuantity);
             foreach ($cartQuantityMaped as $items => $quantity) {
                 $value = $quantity;
-                $order->products()->attach([$idProductsInCart[$items] => ['quantity' => $value]]);
+                $priceProduct= Product::findOrFail($idProductsInCart[$items]);
+                $order->products()->attach([$idProductsInCart[$items] => ['quantity' => $value, 'checkout_price' => $priceProduct->price]]);
             }
         } catch (\Exception $err) {
             Log::error($err);
