@@ -15,13 +15,13 @@ class OrdersController extends Controller
 {
     public function viewOrders()
     {
-        $data = Order::get();
+        $data = Order::with('products')->get();
         return view('orders', ['data' => $data]);
     }
 
     public function viewOrder($id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with('products')->findOrFail($id);
 
         return view('order', ['order' => $order]);
     }
