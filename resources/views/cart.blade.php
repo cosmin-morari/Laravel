@@ -90,6 +90,11 @@
                 <a href="{{ route('index') }}">{{ trans('messages.index') }}</a>
             </div>
         @endif
+        @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <div class="errorOccurred">{{$error}}</div>
+        @endforeach
+    @endif
     </div>
 
 

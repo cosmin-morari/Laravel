@@ -8,7 +8,6 @@
         <table style="text-align: center;" border="1">
             <thead>
                 <tr>
-                    <th>{{ trans('messages.id') }}</th>
                     <th>{{ trans('messages.image') }}</th>
                     <th>{{ trans('messages.name') }}</th>
                     <th>{{ trans('messages.yourQuantity') }}</th>
@@ -19,7 +18,6 @@
 
             @foreach ($order->products as $product)
                 <tbody>
-                    <td>{{ $order->id }}</td>
                     <td><img src="{{ asset('storage/photos/' . $product->imageSource) }}" alt=""></td>
                     <td>{{ $product->title }}</td>
                     <td>{{ $product->pivot->quantity }}</td>

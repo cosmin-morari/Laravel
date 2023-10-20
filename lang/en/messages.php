@@ -19,7 +19,7 @@ return [
     'emailError' => 'The email was not sent successfully!',
     'emailSucces' => 'The email was sent successfully!',
     'emptyCart' => 'The cart is empty!',
-    'error' => 'Error found',
+    'error' => 'An error has occurred. Please try again.',
     'id' => 'Id',
     'image' => 'Image',
     'insufficientStock' => 'The stock is insufficient.',

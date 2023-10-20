@@ -32,12 +32,12 @@ class OrdersController extends Controller
         $cartQuantity = session()->get('cartQuantity');
         $products = Product::whereIn('id', $idProductsInCart)->get();
 
-        if (empty($products)) {
+        if (collect([$products])->isEmpty()) {
             throw ValidationException::withMessages([
-                'cart' => [trans('messages.error')],
+                'cartError' => [trans('messages.error')],
             ])->status(422);
+        
         }
-
         try {
             $totalPrice = Product::whereIn('id', $idProductsInCart)->sum('price');
 
