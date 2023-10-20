@@ -74,19 +74,27 @@ class ProductController extends Controller
 
     public function deleteProductFromDB($id)
     {
-        Product::where('id', $id)->delete();
+        Product::firstOrFail('id')->destroy($id);
         return redirect()->back();
     }
 
     public function update(ValidateEditProduct $request)
     {
+        $id = $request->id;
         $title = $request->title;
         $description = $request->description;
         $price = $request->price;
         $newImageName = time() . '-' . $request->title . '.' . $request->image->extension();
         $request->image->move(public_path('storage/photos'), $newImageName);
-
-        Product::where('id', $request->id)->update(['title' => $title, 'description' => $description, 'price' => $price, 'imageSource' => $newImageName]);
+        $data = [
+            'title' => $title,
+            'description' => $description,
+            'price' => $price,
+            'imageSource' => $newImageName
+        ];
+        $product = Product::findOrFail($id);
+        $product->fill($data);
+        $product->save();
 
         return redirect()->route('products');
     }
@@ -95,13 +103,14 @@ class ProductController extends Controller
     {
         $newImageName = time() . '-' . $request->title . '.' . $request->image->extension();
         $request->image->move(public_path('storage/photos'), $newImageName);
-
         $product = new Product;
-        $product->title = $request->title;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->imageSource = $newImageName;
-
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->price,
+            'imageSource' => $newImageName
+        ];
+        $product->fill($data);
         $product->save();
 
         return redirect()->back();
