@@ -24,7 +24,7 @@ class ValidateEditProduct extends FormRequest
         return [
             'title' => 'required',
             'description' => 'required',
-            'price' => 'required|integer',
+            'price' => 'required|between:0,99.99',
             'image' => 'required|image'
         ];
     }
