@@ -32,7 +32,7 @@ class OrdersController extends Controller
         $cartQuantity = session()->get('cartQuantity');
         $products = Product::whereIn('id', $idProductsInCart)->get();
 
-        if (collect([$products])->isEmpty()) {
+        if ($products->isEmpty()) {
             throw ValidationException::withMessages([
                 'cartError' => [trans('messages.error')],
             ])->status(422);
